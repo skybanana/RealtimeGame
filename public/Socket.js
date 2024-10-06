@@ -10,12 +10,13 @@ let userId = null;
 let stage = null;
 socket.on('response', (data) => {
   console.log(data);
-  stage = data
+  stage = data.stage;
 });
 
 socket.on('connection', (data) => {
   console.log('connection: ', data);
   userId = data.uuid;
+  stage = data.stage;
 });
 
 const sendEvent = (handlerId, payload) => {

@@ -5,10 +5,10 @@ export const gameStart = (uuid, payload) => {
   const { stages } = getGameAssets();
   const firstStage = stages.data[0]
   clearStage(uuid);
-  setStage(uuid, firstStage.id, payload.timestamp, firstStage.score, firstStage.scorePerSecond);
-  console.log('Stage:', getStage(uuid));
+  setStage(uuid, firstStage.id, payload.timestamp);
+  console.log('Stage:', firstStage);
 
-  return { status: 'success', stage: getStage(uuid)};
+  return { status: 'success', stage: firstStage};
 };
 
 export const gameEnd = (uuid, payload) => {

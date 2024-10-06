@@ -1,4 +1,5 @@
 import Item from "./Item.js";
+import { getStage } from "./Socket.js";
 
 class ItemController {
 
@@ -31,7 +32,11 @@ class ItemController {
     }
 
     createItem() {
-        const index = this.getRandomNumber(0, this.itemImages.length - 1);
+        const stage = getStage()
+        console.log(stage)
+        const indexOfItem = this.getRandomNumber(0, stage.itemPool.length - 1);
+        const index = stage.itemPool[indexOfItem]
+        // const index = this.getRandomNumber(0, this.itemImages.length - 1);
         const itemInfo = this.itemImages[index];
         const x = this.canvas.width * 1.5;
         const y = this.getRandomNumber(

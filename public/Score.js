@@ -15,12 +15,14 @@ class Score {
   }
 
   update(deltaTime) {
-    const {currentStage, targetScore, scorePerSecond} = getStage()
-    this.score += deltaTime * 0.001 * scorePerSecond;
-    // 점수가 100점 이상이 될 시 서버에 메세지 전송
-    if (Math.floor(this.score) === targetScore && this.stageChange) {
-      this.stageChange = false;
-      sendEvent(11, { currentStage: currentStage, targetStage: currentStage+1})
+    const stage = getStage() //targetScore, scorePerSecond
+    if(stage==undefined)
+      return console.log("stage undefinded")
+    this.score += (deltaTime * 0.001 * stage.scorePerSecond);
+    // 점수가 기준 점수 이상이 될 시 서버에 메세지 전송
+    if (Math.floor(this.score) >= stage.score ) {
+      // this.stageChange = false;&& this.stageChange
+      sendEvent(11, { currentStage: stage.id, targetStage: stage.id+1})
     }
   }
 
