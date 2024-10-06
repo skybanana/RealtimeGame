@@ -7,8 +7,10 @@ const socket = io('http://localhost:3000', {
 });
 
 let userId = null;
+let stage = null;
 socket.on('response', (data) => {
   console.log(data);
+  stage = data
 });
 
 socket.on('connection', (data) => {
@@ -25,4 +27,8 @@ const sendEvent = (handlerId, payload) => {
   });
 };
 
-export { sendEvent };
+const getStage = () => {
+  return stage
+}
+
+export { sendEvent, getStage };

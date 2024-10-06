@@ -1,5 +1,5 @@
 import { getUsers, removeUser } from '../models/user.model.js';
-import { createStage } from '../models/stage.model.js';
+import { createStage, getStage } from '../models/stage.model.js';
 import { CLIENT_VERSION } from '../constants.js';
 import handlerMappings from './handlerMapping.js';
 
@@ -10,7 +10,7 @@ export const handleConnection = (socket, userUUID) => {
   // 스테이지 빈 배열 생성
   createStage(userUUID);
 
-  socket.emit('connection', { uuid: userUUID });
+  socket.emit('connection', { uuid: userUUID, stage: getStage(userUUID)});
 };
 
 export const handleDisconnect = (socket, uuid) => {

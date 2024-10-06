@@ -3,11 +3,12 @@ import { clearStage, getStage, setStage } from '../models/stage.model.js';
 
 export const gameStart = (uuid, payload) => {
   const { stages } = getGameAssets();
+  const firstStage = stages.data[0]
   clearStage(uuid);
-  setStage(uuid, stages.data[0].id, payload.timestamp);
+  setStage(uuid, firstStage.id, payload.timestamp, firstStage.score, firstStage.scorePerSecond);
   console.log('Stage:', getStage(uuid));
 
-  return { status: 'success' };
+  return { status: 'success', stage: getStage(uuid)};
 };
 
 export const gameEnd = (uuid, payload) => {
