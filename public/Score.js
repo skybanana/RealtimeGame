@@ -16,10 +16,14 @@ class Score {
 
   update(deltaTime) {
     const stage = getStage() //targetScore, scorePerSecond
-    if(stage==undefined)
+    
+    // 서버에서 정보를 못 받았을 경우
+    if(stage==undefined){
       return console.log("stage undefinded")
+    }
     
     this.score += (deltaTime * 0.001 * stage.scorePerSecond);
+
     // 점수가 기준 점수 이상이 될 시 서버에 메세지 전송
     if (Math.floor(this.score) >= stage.score ) {
       // this.stageChange = false;&& this.stageChange
@@ -58,6 +62,10 @@ class Score {
     const scoreX = this.canvas.width - 75 * this.scaleRatio;
     const highScoreX = scoreX - 125 * this.scaleRatio;
 
+    if(isNaN(this.score)){
+      console.log("NaN뜸")
+      this.score = 0;
+    }
     const scorePadded = Math.floor(this.score).toString().padStart(6, 0);
     const highScorePadded = highScore.toString().padStart(6, 0);
 

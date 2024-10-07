@@ -1,10 +1,12 @@
 import { getStage, setStage } from '../models/stage.model.js';
 import { getGameAssets } from '../init/assets.js';
+import { gameStart } from './game.handler.js';
 
 export const moveStageHandler = (userId, payload) => {
   // 유저의 현재 스테이지 배열을 가져오고, 최대 스테이지 ID를 찾는다.
   let currentStages = getStage(userId);
   if (!currentStages.length) {
+    return gameStart(2, {timestamp: Date.now()})
     return { status: 'fail', message: 'No stages found for user' };
   }
 
