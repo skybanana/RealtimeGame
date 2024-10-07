@@ -13,27 +13,37 @@ export const gameStart = (uuid, payload) => {
 
 export const gameEnd = (uuid, payload) => {
   // 클라이언트에서 받은 게임 종료 시 타임스탬프와 총 점수
-  const { timestamp: gameEndTime, score } = payload;
-  const stages = getStage(uuid);
+  const { timestamp: gameEndTime, score, collectItems } = payload;
+  const stagesLog = getStage(uuid);
 
-  if (!stages.length) {
+  if (!stagesLog.length) {
     return { status: 'fail', message: 'No stages found for user' };
   }
 
   // 각 스테이지의 지속 시간을 계산하여 총 점수 계산
   let totalScore = 0;
-  stages.forEach((stage, index) => {
+  stagesLog.forEach((stage, index) => {
     let stageEndTime;
-    if (index === stages.length - 1) {
+    if (index === stagesLog.length - 1) {
       // 마지막 스테이지의 경우 종료 시간이 게임의 종료 시간
       stageEndTime = gameEndTime;
     } else {
       // 다음 스테이지의 시작 시간을 현재 스테이지의 종료 시간으로 사용
-      stageEndTime = stages[index + 1].timestamp;
+      stageEndTime = stagesLog[index + 1].timestamp;
     }
     const stageDuration = (stageEndTime - stage.timestamp) / 1000; // 스테이지 지속 시간 (초 단위)
     totalScore += stageDuration; // 1초당 1점
   });
+
+  // 각 아이템 유효성 검사 및 점수 계산
+  const { stages, items } = getGameAssets();
+
+  // 해당 층 등장 풀에 존재하는지 확인 후 맞으면 점수에 추가
+  collectItems.forEach(ci=>{
+    if(stages[ci.stageId-1000].itemPool.has(ci.itemId)){
+      totalScore += items[ci.itemId-1].score
+    }
+  })
 
   // 점수와 타임스탬프 검증 (예: 클라이언트가 보낸 총점과 계산된 총점 비교)
   // 오차범위 5

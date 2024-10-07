@@ -8,15 +8,20 @@ const socket = io('http://localhost:3000', {
 
 let userId = null;
 let stage = null;
+let items = null;
 socket.on('response', (data) => {
   console.log(data);
   stage = data.stage;
+  if(stage.score == "Infinity"){
+    stage.score = Infinity;
+  }
 });
 
 socket.on('connection', (data) => {
   console.log('connection: ', data);
   userId = data.uuid;
   stage = data.stage;
+  items = data.items;
 });
 
 const sendEvent = (handlerId, payload) => {
@@ -32,4 +37,9 @@ const getStage = () => {
   return stage
 }
 
-export { sendEvent, getStage };
+const searchItem = (id) => {
+  const item = items.filter(item=>item.id===id)
+  return item[0]
+}
+
+export { sendEvent, getStage, searchItem };

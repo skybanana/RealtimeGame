@@ -3,11 +3,12 @@ import { getStage } from "./Socket.js";
 
 class ItemController {
 
-    INTERVAL_MIN = 0;
-    INTERVAL_MAX = 12000;
+    INTERVAL_MIN = 100; // 0
+    INTERVAL_MAX = 1200; // 12000
 
     nextInterval = null;
     items = [];
+    collectItmes = [];
 
 
     constructor(ctx, itemImages, scaleRatio, speed) {
@@ -33,11 +34,10 @@ class ItemController {
 
     createItem() {
         const stage = getStage()
-        console.log(stage)
         const indexOfItem = this.getRandomNumber(0, stage.itemPool.length - 1);
         const index = stage.itemPool[indexOfItem]
         // const index = this.getRandomNumber(0, this.itemImages.length - 1);
-        const itemInfo = this.itemImages[index];
+        const itemInfo = this.itemImages[index-1];
         const x = this.canvas.width * 1.5;
         const y = this.getRandomNumber(
             10,
@@ -85,6 +85,14 @@ class ItemController {
                 itemId: collidedItem.id
             }
         }
+    }
+    
+    getCollectItems(){
+        return this.collectItmes;
+    }
+    
+    addCollectItems(itemId, stageId){
+        this.collectItmes.push({itemId:itemId, stageId:stageId})
     }
 
     reset() {

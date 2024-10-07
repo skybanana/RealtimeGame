@@ -1,4 +1,4 @@
-import { sendEvent, getStage } from "./Socket.js";
+import { sendEvent, getStage, searchItem } from "./Socket.js";
 
 class Score {
   score = 0;
@@ -18,6 +18,7 @@ class Score {
     const stage = getStage() //targetScore, scorePerSecond
     if(stage==undefined)
       return console.log("stage undefinded")
+    
     this.score += (deltaTime * 0.001 * stage.scorePerSecond);
     // 점수가 기준 점수 이상이 될 시 서버에 메세지 전송
     if (Math.floor(this.score) >= stage.score ) {
@@ -27,7 +28,8 @@ class Score {
   }
 
   getItem(itemId) {
-    this.score += 0;
+    const item = searchItem(itemId)
+    this.score += item.score;
   }
 
   reset() {
