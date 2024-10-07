@@ -63,7 +63,6 @@ class Score {
     const highScoreX = scoreX - 125 * this.scaleRatio;
 
     if(isNaN(this.score)){
-      console.log("NaN뜸")
       this.score = 0;
     }
     const scorePadded = Math.floor(this.score).toString().padStart(6, 0);
