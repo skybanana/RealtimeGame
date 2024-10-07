@@ -2,6 +2,7 @@ import express from 'express';
 import { createServer } from 'http';
 import initSocket from './init/socket.js';
 import { loadGameAssets } from './init/assets.js';
+import cors from 'cors'
 
 const app = express();
 const server = createServer(app);
@@ -10,6 +11,7 @@ const PORT = 3000;
 
 app.use(express.static('public'));
 app.use(express.json());
+app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 initSocket(server);
 
